@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+          distribution: 'temurin'
+          cache: maven
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
@@ -31,6 +33,8 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
